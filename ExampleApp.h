@@ -32,8 +32,6 @@ protected:
 
 	DirectX::BoundingSphere m_mainBoundingSphere;
 
-	bool m_usePerspectiveProjection = true;
-
 	// °Å¿ï
 	std::shared_ptr<Model> m_mirror;
 	DirectX::SimpleMath::Plane m_mirrorPlane;

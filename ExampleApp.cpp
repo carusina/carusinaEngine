@@ -141,6 +141,7 @@ void ExampleApp::UpdateGUI()
 		{
 			CreateBuffers();
 		}
+		ImGui::Checkbox("Perspective Projection", &m_camera.m_usePerspectiveProjection);
 		ImGui::TreePop();
 	}
 

@@ -17,8 +17,8 @@ DirectX::SimpleMath::Matrix Camera::GetViewRow()
 
 DirectX::SimpleMath::Matrix Camera::GetProjRow()
 {
-	return m_useFirstPersonView ? DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(m_projFovAngleY), m_aspect, m_nearZ, m_farZ)
-								: DirectX::XMMatrixOrthographicOffCenterLH(-m_aspect, m_aspect, -1.0f, 1.0f, m_nearZ, m_farZ);
+	return m_usePerspectiveProjection ? DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(m_projFovAngleY), m_aspect, m_nearZ, m_farZ)
+									  : DirectX::XMMatrixOrthographicOffCenterLH(-m_aspect, m_aspect, -1.0f, 1.0f, m_nearZ, m_farZ);
 }
 
 DirectX::SimpleMath::Vector3 Camera::GetEyePos()

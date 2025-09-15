@@ -22,6 +22,7 @@ public:
 
 public:
 	bool m_useFirstPersonView = false;
+	bool m_usePerspectiveProjection = true;
 
 private:
 	DirectX::SimpleMath::Vector3 m_position = DirectX::SimpleMath::Vector3(0.275514f, 0.461257f, 0.0855238f);
@@ -39,5 +40,4 @@ private:
 	float m_nearZ = 0.01f;
 	float m_farZ = 100.0f;
 	float m_aspect = 16.0f / 9.0f;
-	bool m_usePerspectiveProjection = false;
 };
