@@ -57,9 +57,9 @@ bool ExampleApp::Initialize()
 
 	// Main Object
 	{
-		/*vector<MeshData> mainMeshes = GeometryGenerator::ReadFromFile("Assets/Models/medieval_vagrant_knights/",
-																	  "scene.gltf", true);*/
-		vector<MeshData> mainMeshes = { GeometryGenerator::MakeSphere(0.4f, 50, 50) };
+		vector<MeshData> mainMeshes = GeometryGenerator::ReadFromFile("Assets/Models/medieval_vagrant_knights/",
+																	  "scene.gltf", true);
+		//vector<MeshData> mainMeshes = { GeometryGenerator::MakeSphere(0.4f, 50, 50) };
 
 		Vector3 center(0.0f, 0.0f, 2.0f);
 		m_mainObj = make_shared<Model>(m_device, m_context, mainMeshes);

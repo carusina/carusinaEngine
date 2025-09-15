@@ -24,9 +24,9 @@ std::vector<MeshData> GeometryGenerator::ReadFromFile(std::string basePath,
             vmin.x = XMMin(vmin.x, v.position.x);
             vmin.y = XMMin(vmin.y, v.position.y);
             vmin.z = XMMin(vmin.z, v.position.z);
-            vmin.x = XMMax(vmin.x, v.position.x);
-            vmin.y = XMMax(vmin.y, v.position.y);
-            vmin.z = XMMax(vmin.z, v.position.z);
+            vmax.x = XMMax(vmin.x, v.position.x);
+            vmax.y = XMMax(vmin.y, v.position.y);
+            vmax.z = XMMax(vmin.z, v.position.z);
         }
     }
 
