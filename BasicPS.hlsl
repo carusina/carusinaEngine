@@ -1,7 +1,4 @@
-#include "Common.hlsli" // 쉐이더에서도 include 사용 가능
-
-// 참고자료
-// https://github.com/Nadrin/PBR/blob/master/data/shaders/hlsl/pbr.hlsl
+#include "Common.hlsli"
 
 // 메쉬 재질 텍스춰들 t0 부터 시작
 Texture2D albedoTex : register(t0);
@@ -49,7 +46,7 @@ float3 GetNormal(PixelShaderInput input)
         float3 normal = normalTex.SampleLevel(linearWrapSampler, input.texcoord, lodBias).rgb;
         normal = 2.0 * normal - 1.0; // 범위 조절 [-1.0, 1.0]
 
-        // OpenGL 용 노멀맵일 경우에는 y 방향을 뒤집어줍니다.
+        // OpenGL 용 노멀맵일 경우에는 y 방향을 뒤집어줌
         normal.y = invertNormalMapY ? -normal.y : normal.y;
         
         float3 N = normalWorld;
@@ -138,7 +135,7 @@ float N2V(float ndcDepth, matrix invProj)
 
 #define NEAR_PLANE 0.1
 // #define LIGHT_WORLD_RADIUS 0.001
-#define LIGHT_FRUSTUM_WIDTH 0.34641 // <- 계산해서 찾은 값
+#define LIGHT_FRUSTUM_WIDTH 0.34641 // 계산해서 찾은 값
 
 // Assuming that LIGHT_FRUSTUM_WIDTH == LIGHT_FRUSTUM_HEIGHT
 // #define LIGHT_RADIUS_UV (LIGHT_WORLD_RADIUS / LIGHT_FRUSTUM_WIDTH)
@@ -154,8 +151,6 @@ float PCF_Filter(float2 uv, float zReceiverNdc, float filterRadiusUV, Texture2D 
     }
     return sum / 128;
 }
-
-// void Func(out float a) <- c++의 void Func(float& a) 처럼 출력값 저장 가능
 
 void FindBlocker(out float avgBlockerDepthView, out float numBlockers, float2 uv,
                  float zReceiverView, Texture2D shadowMap, matrix invProj, float lightRadiusWorld)
@@ -290,7 +285,6 @@ PixelShaderOutput main(PixelShaderInput input)
     {
         if (lights[i].type)
         {
-            // TODO: 여기서 SphereLight 구현
             // 참고: https://cdn2.unrealengine.com/Resources/files/2013SiggraphPresentationsNotes-26915738.pdf
             float3 L = lights[i].position - input.posWorld;
             float3 reflectedDir = normalize(reflect(-pixelToEye, normalWorld)); // 입사 벡터를 넣어줘야함
@@ -326,13 +320,6 @@ PixelShaderOutput main(PixelShaderInput input)
             float3 radiance = 0.0f;
             
             radiance = LightRadiance(lights[i], representativePoint, input.posWorld, normalWorld, shadowMaps[i]);
-            
-            /*if (i == 0)
-                radiance = LightRadiance(lights[i], input.posWorld, normalWorld, shadowMap0);
-            if (i == 1)
-                radiance = LightRadiance(lights[i], input.posWorld, normalWorld, shadowMap1);
-            if (i == 2)
-                radiance = LightRadiance(lights[i], input.posWorld, normalWorld, shadowMap2);*/
                 
             directLighting += (diffuseBRDF + specularBRDF) * radiance * NdotI;
         }

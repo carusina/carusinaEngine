@@ -42,7 +42,7 @@ void ImageFilter::Render(Microsoft::WRL::ComPtr<ID3D11DeviceContext>& context) c
 
 	context->RSSetViewports(1, &m_viewport);
 
-	context->OMSetRenderTargets(UINT(m_RTVs.size()), m_RTVs.data(), NULL);
+	context->OMSetRenderTargets(UINT(m_RTVs.size()), m_RTVs.data(), NULL); // 순서 주의
 
 	context->PSSetShader(m_pixelShader.Get(), 0, 0);
 	context->PSSetShaderResources(0, UINT(m_SRVs.size()), m_SRVs.data());

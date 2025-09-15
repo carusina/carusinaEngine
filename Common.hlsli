@@ -1,7 +1,6 @@
 #ifndef __COMMON_HLSLI__
 #define __COMMON_HLSLI__
 
-// 쉐이더에서 include할 내용들은 .hlsli 파일에 작성
 // Properties -> Item Type: Does not participate in build으로 설정
 
 #define MAX_LIGHTS 3 // 쉐이더에서도 #define 사용 가능

@@ -1,4 +1,4 @@
-#include "Common.hlsli" // 쉐이더에서도 include 사용 가능
+#include "Common.hlsli"
 
 // Vertex Shader에서도 텍스춰 사용
 Texture2D g_heightTexture : register(t0);

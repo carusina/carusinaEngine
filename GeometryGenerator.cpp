@@ -81,7 +81,8 @@ MeshData GeometryGenerator::MakeSquare(const float scale,
 
     MeshData meshData;
 
-    for (size_t i = 0; i < positions.size(); i++) {
+    for (size_t i = 0; i < positions.size(); i++)
+    {
         Vertex v;
         v.position = positions[i];
         v.normalModel = normals[i];
@@ -90,9 +91,7 @@ MeshData GeometryGenerator::MakeSquare(const float scale,
 
         meshData.vertices.push_back(v);
     }
-    meshData.indices = {
-        0, 1, 2, 0, 2, 3, // 앞면
-    };
+    meshData.indices = { 0, 1, 2, 0, 2, 3 }; // 앞면
 
     return meshData;
 }
@@ -106,9 +105,12 @@ MeshData GeometryGenerator::MakeSquareGrid(const int numSlices, const int numSta
     float dy = 2.0f / numStacks;
 
     float y = 1.0f;
-    for (int j = 0; j < numStacks + 1; j++) {
+    for (int j = 0; j < numStacks + 1; j++)
+    {
         float x = -1.0f;
-        for (int i = 0; i < numSlices + 1; i++) {
+
+        for (int i = 0; i < numSlices + 1; i++)
+        {
             Vertex v;
             v.position = Vector3(x, y, 0.0f) * scale;
             v.normalModel = Vector3(0.0f, 0.0f, -1.0f);
@@ -122,8 +124,10 @@ MeshData GeometryGenerator::MakeSquareGrid(const int numSlices, const int numSta
         y -= dy;
     }
 
-    for (int j = 0; j < numStacks; j++) {
-        for (int i = 0; i < numSlices; i++) {
+    for (int j = 0; j < numStacks; j++)
+    {
+        for (int i = 0; i < numSlices; i++)
+        {
             meshData.indices.push_back((numSlices + 1) * j + i);
             meshData.indices.push_back((numSlices + 1) * j + i + 1);
             meshData.indices.push_back((numSlices + 1) * (j + 1) + i);
@@ -252,7 +256,8 @@ MeshData GeometryGenerator::MakeBox(const float scale)
     texcoords.push_back(Vector2(0.0f, 1.0f));
 
     MeshData meshData;
-    for (size_t i = 0; i < positions.size(); i++) {
+    for (size_t i = 0; i < positions.size(); i++)
+    {
         Vertex v;
         v.position = positions[i];
         v.normalModel = normals[i];
@@ -260,14 +265,12 @@ MeshData GeometryGenerator::MakeBox(const float scale)
         meshData.vertices.push_back(v);
     }
 
-    meshData.indices = {
-        0,  1,  2,  0,  2,  3,  // 윗면
-        4,  5,  6,  4,  6,  7,  // 아랫면
-        8,  9,  10, 8,  10, 11, // 앞면
-        12, 13, 14, 12, 14, 15, // 뒷면
-        16, 17, 18, 16, 18, 19, // 왼쪽
-        20, 21, 22, 20, 22, 23  // 오른쪽
-    };
+    meshData.indices = { 0,  1,  2,  0,  2,  3,     // 윗면
+                         4,  5,  6,  4,  6,  7,     // 아랫면
+                         8,  9,  10, 8,  10, 11,    // 앞면
+                         12, 13, 14, 12, 14, 15,    // 뒷면
+                         16, 17, 18, 16, 18, 19,    // 왼쪽
+                         20, 21, 22, 20, 22, 23 };  // 오른쪽
 
     return meshData;
 }
@@ -283,11 +286,11 @@ MeshData GeometryGenerator::MakeCylinder(const float bottomRadius, const float t
     vector<Vertex>& vertices = meshData.vertices;
 
     // 옆면의 바닥 버텍스들 (인덱스 0 이상 numSlices 미만)
-    for (int i = 0; i <= numSlices; i++) {
+    for (int i = 0; i <= numSlices; i++)
+    {
         Vertex v;
-        v.position =
-            Vector3::Transform(Vector3(bottomRadius, -0.5f * height, 0.0f),
-                Matrix::CreateRotationY(dTheta * float(i)));
+        v.position = Vector3::Transform(Vector3(bottomRadius, -0.5f * height, 0.0f),
+                                        Matrix::CreateRotationY(dTheta * float(i)));
 
         v.normalModel = v.position - Vector3(0.0f, -0.5f * height, 0.0f);
         v.normalModel.Normalize();
@@ -297,11 +300,11 @@ MeshData GeometryGenerator::MakeCylinder(const float bottomRadius, const float t
     }
 
     // 옆면의 맨 위 버텍스들 (인덱스 numSlices 이상 2 * numSlices 미만)
-    for (int i = 0; i <= numSlices; i++) {
+    for (int i = 0; i <= numSlices; i++)
+    {
         Vertex v;
-        v.position =
-            Vector3::Transform(Vector3(topRadius, 0.5f * height, 0.0f),
-                Matrix::CreateRotationY(dTheta * float(i)));
+        v.position = Vector3::Transform(Vector3(topRadius, 0.5f * height, 0.0f),
+                                        Matrix::CreateRotationY(dTheta * float(i)));
         v.normalModel = v.position - Vector3(0.0f, 0.5f * height, 0.0f);
         v.normalModel.Normalize();
         v.texcoord = Vector2(float(i) / numSlices, 0.0f);
@@ -334,30 +337,27 @@ MeshData GeometryGenerator::MakeSphere(const float radius, const int numSlices, 
 
     vector<Vertex>& vertices = meshData.vertices;
 
-    for (int j = 0; j <= numStacks; j++) {
+    for (int j = 0; j <= numStacks; j++)
+    {
 
         // 스택에 쌓일 수록 시작점을 x-y 평면에서 회전 시켜서 위로 올리는 구조
-        Vector3 stackStartPoint = Vector3::Transform(
-            Vector3(0.0f, -radius, 0.0f), Matrix::CreateRotationZ(dPhi * j));
+        Vector3 stackStartPoint = Vector3::Transform(Vector3(0.0f, -radius, 0.0f), Matrix::CreateRotationZ(dPhi * j));
 
         for (int i = 0; i <= numSlices; i++) {
             Vertex v;
 
             // 시작점을 x-z 평면에서 회전시키면서 원을 만드는 구조
-            v.position = Vector3::Transform(
-                stackStartPoint, Matrix::CreateRotationY(dTheta * float(i)));
+            v.position = Vector3::Transform(stackStartPoint,
+                                            Matrix::CreateRotationY(dTheta * float(i)));
 
             v.normalModel = v.position; // 원점이 구의 중심
             v.normalModel.Normalize();
-            v.texcoord =
-                Vector2(float(i) / numSlices, 1.0f - float(j) / numStacks) *
-                texScale;
+            v.texcoord = Vector2(float(i) / numSlices, 1.0f - float(j) / numStacks) * texScale;
 
             // texcoord가 위로 갈수록 증가
             Vector3 biTangent = Vector3(0.0f, 1.0f, 0.0f);
 
-            Vector3 normalOrth =
-                v.normalModel - biTangent.Dot(v.normalModel) * v.normalModel;
+            Vector3 normalOrth = v.normalModel - biTangent.Dot(v.normalModel) * v.normalModel;
             normalOrth.Normalize();
 
             v.tangentModel = biTangent.Cross(normalOrth);
@@ -369,12 +369,12 @@ MeshData GeometryGenerator::MakeSphere(const float radius, const int numSlices, 
 
     vector<uint32_t>& indices = meshData.indices;
 
-    for (int j = 0; j < numStacks; j++) {
-
+    for (int j = 0; j < numStacks; j++)
+    {
         const int offset = (numSlices + 1) * j;
 
-        for (int i = 0; i < numSlices; i++) {
-
+        for (int i = 0; i < numSlices; i++)
+        {
             indices.push_back(offset + i);
             indices.push_back(offset + i + numSlices + 1);
             indices.push_back(offset + i + 1 + numSlices + 1);
@@ -390,33 +390,33 @@ MeshData GeometryGenerator::MakeSphere(const float radius, const int numSlices, 
 
 MeshData GeometryGenerator::MakeTetrahedron()
 {
-    // Regular Tetrahedron
-    // https://mathworld.wolfram.com/RegularTetrahedron.html
-
     const float a = 1.0f;
     const float x = sqrt(3.0f) / 3.0f * a;
     const float d = sqrt(3.0f) / 6.0f * a; // = x / 2
     const float h = sqrt(6.0f) / 3.0f * a;
 
     vector<Vector3> points = { {0.0f, x, 0.0f},
-                              {-0.5f * a, -d, 0.0f},
-                              {+0.5f * a, -d, 0.0f},
-                              {0.0f, 0.0f, h} };
+                               {-0.5f * a, -d, 0.0f},
+                               {+0.5f * a, -d, 0.0f},
+                               {0.0f, 0.0f, h} };
 
     Vector3 center = Vector3(0.0f);
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++)
+    {
         center += points[i];
     }
     center /= 4.0f;
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++)
+    {
         points[i] -= center;
     }
 
     MeshData meshData;
 
-    for (int i = 0; i < points.size(); i++) {
+    for (int i = 0; i < points.size(); i++)
+    {
 
         Vertex v;
         v.position = points[i];
@@ -433,21 +433,18 @@ MeshData GeometryGenerator::MakeTetrahedron()
 
 MeshData GeometryGenerator::MakeIcosahedron()
 {
-    // 등20면체
-    // https://mathworld.wolfram.com/Isohedron.html
-
     const float X = 0.525731f;
     const float Z = 0.850651f;
 
     MeshData newMesh;
 
-    vector<Vector3> pos = {
-        Vector3(-X, 0.0f, Z), Vector3(X, 0.0f, Z),   Vector3(-X, 0.0f, -Z),
-        Vector3(X, 0.0f, -Z), Vector3(0.0f, Z, X),   Vector3(0.0f, Z, -X),
-        Vector3(0.0f, -Z, X), Vector3(0.0f, -Z, -X), Vector3(Z, X, 0.0f),
-        Vector3(-Z, X, 0.0f), Vector3(Z, -X, 0.0f),  Vector3(-Z, -X, 0.0f) };
+    vector<Vector3> pos = { Vector3(-X, 0.0f, Z), Vector3(X, 0.0f, Z),   Vector3(-X, 0.0f, -Z),
+                            Vector3(X, 0.0f, -Z), Vector3(0.0f, Z, X),   Vector3(0.0f, Z, -X),
+                            Vector3(0.0f, -Z, X), Vector3(0.0f, -Z, -X), Vector3(Z, X, 0.0f),
+                            Vector3(-Z, X, 0.0f), Vector3(Z, -X, 0.0f),  Vector3(-Z, -X, 0.0f) };
 
-    for (size_t i = 0; i < pos.size(); i++) {
+    for (size_t i = 0; i < pos.size(); i++)
+    {
         Vertex v;
         v.position = pos[i];
         v.normalModel = v.position;
@@ -457,9 +454,9 @@ MeshData GeometryGenerator::MakeIcosahedron()
     }
 
     newMesh.indices = { 1,  4,  0, 4,  9, 0, 4, 5,  9, 8, 5, 4,  1,  8, 4,
-                       1,  10, 8, 10, 3, 8, 8, 3,  5, 3, 2, 5,  3,  7, 2,
-                       3,  10, 7, 10, 6, 7, 6, 11, 7, 6, 0, 11, 6,  1, 0,
-                       10, 1,  6, 11, 0, 9, 2, 11, 9, 5, 2, 9,  11, 2, 7 };
+                        1,  10, 8, 10, 3, 8, 8, 3,  5, 3, 2, 5,  3,  7, 2,
+                        3,  10, 7, 10, 6, 7, 6, 11, 7, 6, 0, 11, 6,  1, 0,
+                        10, 1,  6, 11, 0, 9, 2, 11, 9, 5, 2, 9,  11, 2, 7 };
 
     return newMesh;
 }
@@ -467,7 +464,8 @@ MeshData GeometryGenerator::MakeIcosahedron()
 MeshData GeometryGenerator::SubdivideToSphere(const float radius, MeshData meshData)
 {
     // 원점이 중심이라고 가정
-    for (auto& v : meshData.vertices) {
+    for (auto& v : meshData.vertices)
+    {
         v.position = v.normalModel * radius;
     }
 
@@ -475,30 +473,20 @@ MeshData GeometryGenerator::SubdivideToSphere(const float radius, MeshData meshD
     auto ProjectVertex = [&](Vertex& v) {
         v.normalModel = v.position;
         v.normalModel.Normalize();
-        v.position = v.normalModel * radius;
-
-        // 주의: 텍스춰가 이음매에서 깨집니다.
-        // atan vs atan2
-        // https://stackoverflow.com/questions/283406/what-is-the-difference-between-atan-and-atan2-in-c
-        // const float theta = atan2f(v.position.z, v.position.x);
-        // const float phi = acosf(v.position.y / radius);
-        // v.texcoord.x = theta / XM_2PI;
-        // v.texcoord.y = phi / XM_PI;
-        };
+        v.position = v.normalModel * radius; };
 
     auto UpdateFaceNormal = [](Vertex& v0, Vertex& v1, Vertex& v2) {
-        auto faceNormal =
-            (v1.position - v0.position).Cross(v2.position - v0.position);
+        auto faceNormal = (v1.position - v0.position).Cross(v2.position - v0.position);
         faceNormal.Normalize();
         v0.normalModel = faceNormal;
         v1.normalModel = faceNormal;
-        v2.normalModel = faceNormal;
-        };
+        v2.normalModel = faceNormal; };
 
     // 버텍스가 중복되는 구조로 구현
     MeshData newMesh;
     uint32_t count = 0;
-    for (size_t i = 0; i < meshData.indices.size(); i += 3) {
+    for (size_t i = 0; i < meshData.indices.size(); i += 3)
+    {
         size_t i0 = meshData.indices[i];
         size_t i1 = meshData.indices[i + 1];
         size_t i2 = meshData.indices[i + 2];
@@ -538,7 +526,8 @@ MeshData GeometryGenerator::SubdivideToSphere(const float radius, MeshData meshD
         newMesh.vertices.push_back(v5);
         newMesh.vertices.push_back(v2);
 
-        for (uint32_t j = 0; j < 12; j++) {
+        for (uint32_t j = 0; j < 12; j++)
+        {
             newMesh.indices.push_back(j + count);
         }
         count += 12;
