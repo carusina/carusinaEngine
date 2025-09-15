@@ -110,9 +110,10 @@ bool AppBase::Initialize()
 void AppBase::OnMouseMove(int mouseX, int mouseY)
 {
 	// 마우스 커서의 위치를 NDC 좌표로 변환
-	// Screen [0, width - 1] x [0, height - 1] => NDC [-1, 1] x [-1, 1]
+	// Screen(원점 좌상단) [0, width - 1] x [0, height - 1]
+	// => NDC(원점 정가운데) [-1, 1] x [-1, 1]
 	m_cursorNdcX = mouseX * 2.0f / m_screenWidth - 1.0f;
-	m_cursorNdcY = mouseY * 2.0f / m_screenHeight - 1.0f;
+	m_cursorNdcY = -mouseY * 2.0f / m_screenHeight + 1.0f;
 
 	// 커서가 화면 밖으로 나갔을 경우 처리
 	m_cursorNdcX = clamp(m_cursorNdcX, -1.0f, 1.0f);
@@ -377,7 +378,7 @@ bool AppBase::UpdateMouseControl(const DirectX::BoundingSphere& bs,
 	q = Quaternion::CreateFromAxisAngle(Vector3(1.0f, 0.0f, 0.0f), 0.0f);
 	dragTranslation = Vector3(0.0f);
 
-	// 마우스 좌클릭은 회전
+	// 마우스 좌클릭시 회전
 	if (m_leftButton)
 	{
 		Vector3 cursorNdcNear = Vector3(m_cursorNdcX, m_cursorNdcY, 0.0f);
@@ -386,7 +387,7 @@ bool AppBase::UpdateMouseControl(const DirectX::BoundingSphere& bs,
 		// NDC 좌표계의 커서를 World 좌표계로 역변환 해주는 Matrix
 		Matrix inverseProjView = (viewRow * projRow).Invert();
 
-		// Picking Ray의 방향
+		// Picking Ray 생성
 		Vector3 cursorWorldNear = Vector3::Transform(cursorNdcNear, inverseProjView);
 		Vector3 cursorWorldFar = Vector3::Transform(cursorNdcFar, inverseProjView);
 		Vector3 dir = cursorWorldFar - cursorWorldNear;
@@ -414,7 +415,7 @@ bool AppBase::UpdateMouseControl(const DirectX::BoundingSphere& bs,
 				{
 					Vector3 axis = prevVector.Cross(currentVector);
 					axis.Normalize();
-					q - Quaternion::CreateFromAxisAngle(axis, theta);
+					q = Quaternion::CreateFromAxisAngle(axis, theta);
 
 					prevVector = currentVector;
 				}
@@ -424,6 +425,7 @@ bool AppBase::UpdateMouseControl(const DirectX::BoundingSphere& bs,
 		}
 	}
 
+	// 마우스 우클릭시 이동
 	if (m_rightButton)
 	{
 		Vector3 cursorNdcNear = Vector3(m_cursorNdcX, m_cursorNdcY, 0.0f);

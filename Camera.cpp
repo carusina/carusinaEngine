@@ -5,8 +5,11 @@
 using namespace std;
 using namespace DirectX::SimpleMath;
 
+// Rendering에 사용할 View Matrix를 만들어주는 부분
 DirectX::SimpleMath::Matrix Camera::GetViewRow()
 {
+	// 이동한 위치에서 회전해야함 => 내가 기준
+	// 내가 아니라 세상이 움직인다 => 내가 움직이는 것과 같은 효과
 	return Matrix::CreateTranslation(-this->m_position) *
 		   Matrix::CreateRotationY(-this->m_yaw) *
 		   Matrix::CreateRotationX(-this->m_pitch);
@@ -56,7 +59,7 @@ void Camera::UpdateMouse(float mouseNdcX, float mouseNdcY)
 	// NDC [-1, 1] x [-1, 1] x [0, 1]
 	if (m_useFirstPersonView) {
 		m_yaw = mouseNdcX * DirectX::XM_2PI;	  // 좌우 360도
-		m_pitch = mouseNdcY * DirectX::XM_PIDIV2; // 위 아래 90도
+		m_pitch = -mouseNdcY * DirectX::XM_PIDIV2; // 위 아래 90도
 
 		UpdateViewDir();
 	}

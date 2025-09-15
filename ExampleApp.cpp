@@ -333,7 +333,7 @@ void ExampleApp::Update(float dt)
 		m_cursorSphere->m_isVisible = false;
 	}
 
-	for (auto& i : m_basicList)
+	for (shared_ptr<Model>& i : m_basicList)
 	{
 		i->UpdateConstantBuffers(m_device, m_context);
 	}
