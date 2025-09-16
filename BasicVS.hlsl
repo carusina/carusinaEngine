@@ -34,9 +34,9 @@ PixelShaderInput main(VertexShaderInput input)
     {
         // VertexShader에서는 SampleLevel 사용
         // Heightmap은 보통 흑백이라서 마지막에 .r로 float 하나만 사용
-        float height = g_heightTexture.SampleLevel(linearClampSampler, input.texcoord, 0).r;
-        height = height * 2.0 - 1.0;
-        pos += float4(output.normalWorld * height * heightScale, 0.0);
+        float height = g_heightTexture.SampleLevel(linearClampSampler, input.texcoord, 0).r; // heightTexture의 범위: [0.0, 1.0]
+        height = height * 2.0 - 1.0; // 범위 변환 => [-1.0, 1.0]
+        pos += float4(output.normalWorld * height * heightScale, 0.0); // normal 방향으로 vetex의 높낮이 조절
     }
 
     output.posWorld = pos.xyz; // 월드 위치 따로 저장

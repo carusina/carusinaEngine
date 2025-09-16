@@ -512,7 +512,7 @@ bool AppBase::InitDirect3D()
 	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-	const D3D_FEATURE_LEVEL featureLevels[2] = { D3D_FEATURE_LEVEL_11_0,
+	const D3D_FEATURE_LEVEL featureLevels[2] = { D3D_FEATURE_LEVEL_11_0, // 높은 버전이 먼저 오도록 설정
 												 D3D_FEATURE_LEVEL_9_3 };
 	D3D_FEATURE_LEVEL featureLevel;
 
@@ -520,8 +520,8 @@ bool AppBase::InitDirect3D()
 	ZeroMemory(&sd, sizeof(sd));
 	sd.BufferDesc.Width = m_screenWidth;
 	sd.BufferDesc.Height = m_screenHeight;
-	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	sd.BufferCount = 2; // Double
+	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // 최종 Present해주는 texture는 LDR
+	sd.BufferCount = 2; // Double-Buffering
 	sd.BufferDesc.RefreshRate.Numerator = 60;
 	sd.BufferDesc.RefreshRate.Denominator = 1;
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
@@ -529,7 +529,7 @@ bool AppBase::InitDirect3D()
 	sd.Windowed = TRUE;
 	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-	sd.SampleDesc.Count = 1;
+	sd.SampleDesc.Count = 1; // Not MSAA
 	sd.SampleDesc.Quality = 0;
 	ThrowIfFailed(D3D11CreateDeviceAndSwapChain(0, driverType, 0, createDeviceFlags, featureLevels, 1,
 												D3D11_SDK_VERSION, &sd, m_swapChain.GetAddressOf(), m_device.GetAddressOf(),
@@ -603,7 +603,7 @@ void AppBase::CreateBuffers()
 	texDesc.Usage = D3D11_USAGE_DEFAULT;
 	texDesc.MiscFlags = 0;
 	texDesc.CPUAccessFlags = 0;
-	if (m_useMSAA && m_numQualityLevels)
+	if (m_useMSAA && m_numQualityLevels) // MSAA 사용시
 	{
 		texDesc.SampleDesc.Count = 4;
 		texDesc.SampleDesc.Quality = m_numQualityLevels - 1;
@@ -614,11 +614,11 @@ void AppBase::CreateBuffers()
 		texDesc.SampleDesc.Quality = 0;
 	}
 
-	ThrowIfFailed(m_device->CreateTexture2D(&texDesc, NULL, m_floatBuffer.GetAddressOf()));
+	ThrowIfFailed(m_device->CreateTexture2D(&texDesc, NULL, m_floatBuffer.GetAddressOf())); // Texture2DMS
 	ThrowIfFailed(m_device->CreateRenderTargetView(m_floatBuffer.Get(), NULL, m_floatRTV.GetAddressOf()));
 
-	// Float MSAA를 Resovle해서 저장할 SRV/RTV
-	texDesc.SampleDesc.Count = 1;
+	// Float Buffer(Texture2DMS)를 (Texture2D로)Resovle해서 저장할 SRV/RTV
+	texDesc.SampleDesc.Count = 1; // Not MSAA
 	texDesc.SampleDesc.Quality = 0;
 	ThrowIfFailed(m_device->CreateTexture2D(&texDesc, NULL, m_resolvedBuffer.GetAddressOf()));
 	ThrowIfFailed(m_device->CreateTexture2D(&texDesc, NULL, m_postEffectsBuffer.GetAddressOf()));
@@ -630,9 +630,9 @@ void AppBase::CreateBuffers()
 	CreateDepthBuffers();
 
 	m_postProcess.Initialize(m_device, m_context,
-							{ m_postEffectsSRV },
-							{ m_backBufferRTV },
-							m_screenWidth, m_screenHeight, 4);
+							 { m_postEffectsSRV },
+							 { m_backBufferRTV },
+							 m_screenWidth, m_screenHeight, 4);
 }
 
 void AppBase::SetMainViewport()

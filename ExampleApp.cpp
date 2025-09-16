@@ -57,9 +57,9 @@ bool ExampleApp::Initialize()
 
 	// Main Object
 	{
-		vector<MeshData> mainMeshes = GeometryGenerator::ReadFromFile("Assets/Models/medieval_vagrant_knights/",
-																	  "scene.gltf", true);
-		//vector<MeshData> mainMeshes = { GeometryGenerator::MakeSphere(0.4f, 50, 50) };
+		/*vector<MeshData> mainMeshes = GeometryGenerator::ReadFromFile("Assets/Models/medieval_vagrant_knights/",
+																	  "scene.gltf", true);*/
+		vector<MeshData> mainMeshes = { GeometryGenerator::MakeSphere(0.4f, 50, 50) };
 
 		Vector3 center(0.0f, 0.0f, 2.0f);
 		m_mainObj = make_shared<Model>(m_device, m_context, mainMeshes);
@@ -480,8 +480,8 @@ void ExampleApp::Render()
 
 	} // end of if (m_mirrorAlpha < 1.0f)
 
-	m_context->ResolveSubresource(m_resolvedBuffer.Get(), 0,
-								  m_floatBuffer.Get(), 0,
+	m_context->ResolveSubresource(m_resolvedBuffer.Get(), 0, // Texture2D
+								  m_floatBuffer.Get(), 0,	 // Texture2DMS
 								  DXGI_FORMAT_R16G16B16A16_FLOAT);
 
 	// PostEffects

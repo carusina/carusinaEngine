@@ -43,15 +43,17 @@ float3 GetNormal(PixelShaderInput input)
     
     if (useNormalMap) // NormalWorld를 교체
     {
-        float3 normal = normalTex.SampleLevel(linearWrapSampler, input.texcoord, lodBias).rgb;
-        normal = 2.0 * normal - 1.0; // 범위 조절 [-1.0, 1.0]
+        float3 normal = normalTex.SampleLevel(linearWrapSampler, input.texcoord, lodBias).rgb; // texture의 범위: [0.0, 1.0]
+        normal = 2.0 * normal - 1.0; // normal로 사용하기 위한 범위 조절 [-1.0, 1.0]
 
         // OpenGL 용 노멀맵일 경우에는 y 방향을 뒤집어줌
         normal.y = invertNormalMapY ? -normal.y : normal.y;
         
-        float3 N = normalWorld;
-        float3 T = normalize(input.tangentWorld - dot(input.tangentWorld, N) * N);
-        float3 B = cross(N, T);
+        // Normal Vector 회전용 TangentSpace (3x3)
+        float3 N = normalWorld; // Model의 nomalWorld 그대로 사용
+        float3 T = normalize(input.tangentWorld - dot(input.tangentWorld, N) * N); // tangentWorld와 normalWorld가 수직이 아닐 수도 있다
+                                                                                   // => normalWorld의 성분을 빼줘 수직을 보장
+        float3 B = cross(N, T); // 순서 유의
         
         // matrix는 float4x4, 여기서는 벡터 변환용이라서 3x3 사용
         float3x3 TBN = float3x3(T, B, N);

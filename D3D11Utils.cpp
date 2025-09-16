@@ -190,13 +190,13 @@ void ReadEXRImage(const std::string fileName, std::vector<uint8_t>& image,
 		<< metadata.format << endl;
 
 	image.resize(scratchImage.GetPixelsSize());
-	memcpy(image.data(), scratchImage.GetPixels(), image.size());
+	memcpy(image.data(), scratchImage.GetPixels(), image.size()); // image에 처리한 scratchImage를 저장
 
-	// 데이터 범위 확인해보기
+	// Debug용 데이터 범위 확인해보기
 	vector<float> f32(image.size() / 2);
-	uint16_t* f16 = (uint16_t*)image.data();
+	uint16_t* f16 = (uint16_t*)image.data(); // image의 data(8bit)를 16bit씩 처리
 	for (int i = 0; i < image.size() / 2; i++) {
-		f32[i] = fp16_ieee_to_fp32_value(f16[i]);
+		f32[i] = fp16_ieee_to_fp32_value(f16[i]); 
 	}
 
 	const float minValue = *std::min_element(f32.begin(), f32.end());
@@ -323,12 +323,12 @@ void CreateTextureHelper(ComPtr<ID3D11Device>& device,
 	texDesc.ArraySize = 1;
 	texDesc.Format = pixelFormat;
 	texDesc.SampleDesc.Count = 1;
-	texDesc.Usage = D3D11_USAGE_DEFAULT; // Staging texture로부터 복사 가능
+	texDesc.Usage = D3D11_USAGE_DEFAULT; // Staging texture로부터 복사해야하기 때문에 Default
 	texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
 	texDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS; // Mipmap 사용
-	texDesc.CPUAccessFlags = 0;
+	texDesc.CPUAccessFlags = 0; // GPU 내에서 복사하기 때문에 0
 
-	// 초기 데이터 없이 texture 생성
+	// 초기 데이터 없이(검은색) texture 생성
 	device->CreateTexture2D(&texDesc, NULL, texture.GetAddressOf());
 	
 	// Staging texture로부터 가장 높은 해상도의 texture 복사
@@ -352,8 +352,8 @@ void D3D11Utils::CreateTexture(Microsoft::WRL::ComPtr<ID3D11Device>& device,
 
 	int width = 0, height = 0;
 	vector<uint8_t> image;
-	DXGI_FORMAT pixelFormat = useSRGB ? DXGI_FORMAT_R8G8B8A8_UNORM_SRGB
-									  : DXGI_FORMAT_R8G8B8A8_UNORM;
+	DXGI_FORMAT pixelFormat = useSRGB ? DXGI_FORMAT_R8G8B8A8_UNORM_SRGB // SRGB를 붙이면 DirectX 내부적으로
+									  : DXGI_FORMAT_R8G8B8A8_UNORM;	    // HDR과 같은 선상으로 Gamma correction 처리
 
 	string ext(fileName.end() - 3, fileName.end());
 	std::transform(ext.begin(), ext.end(), ext.begin(), std::tolower); // 확장자 소문자로 변환
