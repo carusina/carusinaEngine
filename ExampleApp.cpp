@@ -21,9 +21,9 @@ bool ExampleApp::Initialize()
 		return false;
 	}
 	
-	AppBase::InitCupemaps(L"Assets/Textures/Cubemaps/HDRI/",
-					   	  L"SampleEnvHDR.dds", L"SampleSpecularHDR.dds",
-						  L"SampleDiffuseHDR.dds", L"SampleBrdf.dds");
+	AppBase::InitCupemaps(L"Assets/Textures/Cubemaps/HDRI/Ocean/",
+					   	  L"OceanEnvHDR.dds", L"OceanSpecularHDR.dds",
+						  L"OceanDiffuseHDR.dds", L"OceanBrdf.dds");
 
 	// 후처리용 화면 사각형
 	{
@@ -58,8 +58,10 @@ bool ExampleApp::Initialize()
 	// Main Object
 	{
 		/*vector<MeshData> mainMeshes = GeometryGenerator::ReadFromFile("Assets/Models/medieval_vagrant_knights/",
-																	  "scene.gltf", true);*/
-		vector<MeshData> mainMeshes = { GeometryGenerator::MakeSphere(0.4f, 50, 50) };
+																	    "scene.gltf", true);*/
+		vector<MeshData> mainMeshes = GeometryGenerator::ReadFromFile("Assets/Models/mechanical_shark/",
+																	  "scene.gltf", true);
+		//vector<MeshData> mainMeshes = { GeometryGenerator::MakeSphere(0.4f, 50, 50) };
 
 		Vector3 center(0.0f, 0.0f, 2.0f);
 		m_mainObj = make_shared<Model>(m_device, m_context, mainMeshes);

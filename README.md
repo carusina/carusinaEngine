@@ -17,11 +17,13 @@
 ---
 
 ## 📸 Demo
+![carusinaEngine Demo](https://github.com/user-attachments/assets/3f1723db-7925-424d-b306-ef623e053bad)
 
-(ScreenShot 추가 예정)
+-   **3D Models**
+    -   **Mechanical Shark:** by [Loïc Norgeot](https://skfb.ly/6G7GM)
 
-![carusinaEngine Demo](https://via.placeholder.com/800x450.png?text=Your+Best+Rendering+Result+Here)
-
+-   **Cube Maps / HDRI**
+    -   **underwater Cupemap:** by [Ali Abdul Rahman](https://unsplash.com/photos/Xva-TYqwHhA)
 ---
 
 ## ✨ 주요 기능 (Features)
@@ -41,11 +43,6 @@
     -   Shadow Mapping
         -   PCF (Percentage-Closer Filtering)를 이용한 부드러운 그림자 경계 처리
         -   PCSS 그림자 기법
-
--   **지오메트리 처리 (Geometry Processing)**
-    -   테셀레이션 (Tessellation)을 이용한 동적 LOD (Level of Detail)
-    -   지오메트리 셰이더 (Geometry Shader) 활용
-        -   빌보드(Billboard), 노멀 벡터(Normal Vector) 시각화
 
 -   **텍스처링 및 재질 (Texturing & Materials)**
     -   노멀 맵핑 (Normal Mapping)
@@ -74,5 +71,6 @@
 
 ## 🎯 앞으로의 목표 (Roadmap)
 
+-   [ ] 동적 LOD 구현
 -   [ ] 물리 시스템 연동
 -   [ ] 애니메이션 구현
