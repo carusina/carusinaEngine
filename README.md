@@ -22,7 +22,7 @@
 -   **3D Models**
     -   **Mechanical Shark:** by [Loïc Norgeot](https://skfb.ly/6G7GM)
 
- -   **Cube Maps / HDRI**
+-   **Cube Maps / HDRI**
     -   **underwater Cupemap:** by [Ali Abdul Rahman](https://unsplash.com/photos/Xva-TYqwHhA)
 ---
 
