@@ -10,6 +10,7 @@
 #define LIGHT_SPOT 0x04
 #define LIGHT_SHADOW 0x10
 
+// 버퍼는 무조건 16Byte씩 맞추기
 // for Vertex / Geometry Shader
 __declspec(align(256)) struct MeshConstants {
 	DirectX::SimpleMath::Matrix world; // World Matrix
@@ -40,16 +41,15 @@ __declspec(align(256)) struct MaterialConstants {
 // about Light, Use in GlobalConstants
 struct Light {
 	DirectX::SimpleMath::Vector3 position = DirectX::SimpleMath::Vector3(0.0f, 0.0f, -2.0f);
+	float fallOffStart = 0.0f;
 	DirectX::SimpleMath::Vector3 direction = DirectX::SimpleMath::Vector3(0.0f, 0.0f, 1.0f);
-	float fallOfStart = 0.0f;
-	float fallOfEnd = 20.0f;
+	float fallOffEnd = 20.0f;
 	DirectX::SimpleMath::Vector3 radiance = DirectX::SimpleMath::Vector3(5.0f); 
 	float spotPower = 6.0f;
 	
 	// Light type bitMasking
 	uint32_t type = LIGHT_OFF;
 	float radius = 0.0f; // Light radius
-
 	float haloRadius = 0.0f;
 	float haloStrength = 0.0f;
 
@@ -63,10 +63,10 @@ __declspec(align(256)) struct  GlobalConstants {
 	DirectX::SimpleMath::Matrix invProj; // Inverse Projection Martix
 	DirectX::SimpleMath::Matrix viewProj;
 	DirectX::SimpleMath::Matrix invViewProj; // Projection Space -> World Space
-
-	DirectX::SimpleMath::Vector3 eyeWorld;
 	
+	DirectX::SimpleMath::Vector3 eyeWorld;
 	float IblStrength = 0.0f;
+
 	int textureToDraw = 0; // 0: Env, 1: Specular, 2: Irradiance, else: Black
 	float envLodBias = 0.0f;
 	float lodBias = 2.0f;

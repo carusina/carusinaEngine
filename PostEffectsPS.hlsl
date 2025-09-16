@@ -9,6 +9,7 @@ cbuffer PostEffectsConstants : register(b3)
     int mode; // 1: Rendered image, 2: DepthOnly
     float depthScale;
     float fogStrength;
+    float dummy;
 };
 
 struct SamplingPixelShaderInput
@@ -70,9 +71,13 @@ float HaloEmission(float3 posView, float radius)
 
     float t1 = 0.0;
     float t2 = 0.0;
-    if (RaySphereIntersection(rayStart, dir, center, radius, t1, t2) && t1 < posView.z)
+    if (RaySphereIntersection(rayStart, dir, center, radius, t1, t2) && t1 < length(posView))
     {
-        t2 = min(posView.z, t2);
+        // 뒤에 Halo 효과 방지
+        t1 = max(0, t1);
+        t2 = max(0, t2);
+        
+        t2 = min(posView.z, t2); // Block됐을 시 처리
             
         float p2 = dot(rayStart - center, rayStart - center);
         float pdotv = dot(rayStart - center, dir);

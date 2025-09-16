@@ -47,7 +47,7 @@ namespace Graphics {
 	extern Microsoft::WRL::ComPtr<ID3D11PixelShader> bloomUpPS;
 	extern Microsoft::WRL::ComPtr<ID3D11PixelShader> normalPS;
 	extern Microsoft::WRL::ComPtr<ID3D11PixelShader> depthOnlyPS;
-	extern Microsoft::WRL::ComPtr<ID3D11PixelShader> postEffectsyPS;
+	extern Microsoft::WRL::ComPtr<ID3D11PixelShader> postEffectsPS;
 
 	// Input Layouts
 	extern Microsoft::WRL::ComPtr<ID3D11InputLayout> basicIL;

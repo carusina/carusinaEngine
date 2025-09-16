@@ -39,7 +39,7 @@ namespace Graphics {
 	ComPtr<ID3D11PixelShader> bloomUpPS;
 	ComPtr<ID3D11PixelShader> normalPS;
 	ComPtr<ID3D11PixelShader> depthOnlyPS;
-	ComPtr<ID3D11PixelShader> postEffectsyPS;
+	ComPtr<ID3D11PixelShader> postEffectsPS;
 
 	// Input Layouts
 	ComPtr<ID3D11InputLayout> basicIL;
@@ -240,7 +240,7 @@ void Graphics::InitShaders(ComPtr<ID3D11Device>& device)
 	D3D11Utils::CreatePixelShader(device, L"BloomDownPS.hlsl", bloomDownPS);
 	D3D11Utils::CreatePixelShader(device, L"BloomUpPS.hlsl", bloomUpPS);
 	D3D11Utils::CreatePixelShader(device, L"DepthOnlyPS.hlsl", depthOnlyPS);
-	D3D11Utils::CreatePixelShader(device, L"PostEffectsPS.hlsl", postEffectsyPS);
+	D3D11Utils::CreatePixelShader(device, L"PostEffectsPS.hlsl", postEffectsPS);
 }
 
 void Graphics::InitBlendStates(ComPtr<ID3D11Device>& device)
@@ -344,7 +344,7 @@ void Graphics::InitPipelineStates(ComPtr<ID3D11Device>& device)
 	postEffectsPSO.m_inputLayout = samplingIL;
 	postEffectsPSO.m_vertexShader = samplingVS;
 	postEffectsPSO.m_rasterizerState = postProcessingRS;
-	postEffectsPSO.m_pixelShader = postEffectsyPS;
+	postEffectsPSO.m_pixelShader = postEffectsPS;
 
 	// postProcessingPSO
 	postProcessingPSO.m_inputLayout = samplingIL;

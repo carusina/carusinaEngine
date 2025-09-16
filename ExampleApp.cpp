@@ -84,10 +84,10 @@ bool ExampleApp::Initialize()
 		m_globalConstsCPU.lights[0].radius = 0.02f;
 		m_globalConstsCPU.lights[0].type = LIGHT_SPOT | LIGHT_SHADOW;
 
-		// 조명 1은 Update
+		// 조명 1의 위치와 방향은 Update에서
 		m_globalConstsCPU.lights[1].radiance = Vector3(5.0f);
 		m_globalConstsCPU.lights[1].spotPower = 3.0f;
-		m_globalConstsCPU.lights[1].fallOfEnd = 20.0f;
+		m_globalConstsCPU.lights[1].fallOffEnd = 20.0f;
 		m_globalConstsCPU.lights[1].radius = 0.02f;
 		m_globalConstsCPU.lights[1].type = LIGHT_SPOT | LIGHT_SHADOW;
 

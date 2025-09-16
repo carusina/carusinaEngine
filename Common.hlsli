@@ -30,11 +30,11 @@ Texture2D shadowMaps[MAX_LIGHTS] : register(t15);
 
 struct Light
 {
-    float3 radiance; // Strength
+    float3 position;
     float fallOffStart;
     float3 direction;
     float fallOffEnd;
-    float3 position;
+    float3 radiance; // Strength
     float spotPower;
     
     uint type;
@@ -54,9 +54,10 @@ cbuffer GlobalConstants : register(b1)
     matrix invProj; // 역프로젝션행렬
     matrix viewProj;
     matrix invViewProj; // Proj -> World
+    
     float3 eyeWorld;
     float strengthIBL;
-
+    
     int textureToDraw = 0; // 0: Env, 1: Specular, 2: Irradiance, 그외: 검은색
     float envLodBias = 0.0f; // 환경맵 LodBias
     float lodBias = 2.0f; // 다른 물체들 LodBias
