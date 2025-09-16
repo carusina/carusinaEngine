@@ -17,10 +17,7 @@
 ---
 
 ## 📸 Demo
-
-(ScreenShot 추가 예정)
-
-![carusinaEngine Demo](https://via.placeholder.com/800x450.png?text=Your+Best+Rendering+Result+Here)
+![carusinaEngine Demo](https://github.com/user-attachments/assets/3f1723db-7925-424d-b306-ef623e053bad)
 
 ---
 
